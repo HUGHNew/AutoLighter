@@ -1,4 +1,4 @@
-package com.github.hughnew.autolighter
+package com.github.hughnew.autolighter.helpers
 
 import android.app.Activity
 import android.content.res.Configuration
