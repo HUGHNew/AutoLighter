@@ -9,31 +9,39 @@ import android.text.Spanned
 import android.text.style.StyleSpan
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.github.hughnew.autolighter.helpers.setScreenBrightness
+import com.github.hughnew.autolighter.helpers.isNotificationEnabled
+import com.github.hughnew.autolighter.helpers.makeToast
 import com.github.hughnew.autolighter.helpers.transStatusBar
 
 class MainActivity : AppCompatActivity() {
-    private val permissionLauncher =
-        registerForActivityResult(WriteSettingContract()) {
-            if (it) {
-                setScreenBrightness()
-            }
+    private val permissionLauncher = registerForActivityResult(WriteSettingContract()) {
+        if (!it) {
+            makeToast("No permission to change settings")
+            finish()
         }
+    }
+    private val notifyLauncher = registerForActivityResult(EnableNotificationContract()) {
+        if (!it) {
+            makeToast("No permission to notify")
+            finish()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
+        requirePermissions()
         setUpViews()
         setUpServices()
-        requirePermissions()
     }
 
     private fun setUpViews() {
+        setContentView(R.layout.activity_main)
         transStatusBar()
         findViewById<TextView>(R.id.text).apply {
             text = spannableString
             setOnClickListener {
+                makeToast("service turned off")
                 stopService(Intent(this@MainActivity, AutoLighterService::class.java))
             }
         }
@@ -46,6 +54,9 @@ class MainActivity : AppCompatActivity() {
     private fun requirePermissions() {
         if (!Settings.System.canWrite(this)) {
             permissionLauncher.launch(null)
+        }
+        if (!isNotificationEnabled()) {
+            notifyLauncher.launch(null)
         }
     }
 

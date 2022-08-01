@@ -6,7 +6,6 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import com.github.hughnew.autolighter.helpers.unregisterBroadcasts
@@ -16,17 +15,15 @@ class AutoLighterService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        Log.w(MainActivity.TAG, "Create Service")
+        Log.w(TAG, "Create Service")
         registerBroadcasts()
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val channelId = "lighter"
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                channelId, "AutoLighter",
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-            manager.createNotificationChannel(channel)
-        }
+        val channel = NotificationChannel(
+            channelId, "AutoLighter",
+            NotificationManager.IMPORTANCE_DEFAULT
+        )
+        manager.createNotificationChannel(channel)
         startForeground(
             1,
             NotificationFactory.build(
@@ -41,7 +38,7 @@ class AutoLighterService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.w(MainActivity.TAG, "Destroy Service")
+        Log.w(TAG, "Destroy Service")
         unregisterBroadcasts()
     }
 
@@ -53,5 +50,8 @@ class AutoLighterService : Service() {
     override fun onBind(intent: Intent): IBinder? {
         // Return the communication channel to the service.
         return null
+    }
+    companion object {
+        const val TAG = "AutoLighter.LighterService"
     }
 }

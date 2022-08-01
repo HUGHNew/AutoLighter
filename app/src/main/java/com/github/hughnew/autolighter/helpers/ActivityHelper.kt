@@ -9,7 +9,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 
 fun Activity.transStatusBar() {
-    if (Build.VERSION.SDK_INT in 21..29) {
+    if (Build.VERSION.SDK_INT in 26..29) {
         if (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             == Configuration.UI_MODE_NIGHT_NO
         ) {

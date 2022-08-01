@@ -2,6 +2,8 @@ package com.github.hughnew.autolighter.helpers
 
 import android.content.Context
 import android.provider.Settings
+import android.widget.Toast
+import androidx.core.app.NotificationManagerCompat
 import com.github.hughnew.autolighter.MainActivity
 
 fun Context.isScreenAutoBrightness(): Boolean {
@@ -20,3 +22,9 @@ fun Context.setScreenBrightness(bright: Int = MainActivity.HALF_BRIGHTNESS): Boo
     Settings.System.putInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, bright)
     return true
 }
+
+fun Context.isNotificationEnabled(): Boolean =
+    NotificationManagerCompat.from(this).areNotificationsEnabled()
+
+fun Context.makeToast(msg:String) =
+    Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
