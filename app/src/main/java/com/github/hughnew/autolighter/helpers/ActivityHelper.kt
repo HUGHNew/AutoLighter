@@ -3,25 +3,10 @@ package com.github.hughnew.autolighter.helpers
 import android.app.Activity
 import android.content.res.Configuration
 import android.os.Build
-import android.provider.Settings.System
 import android.view.View
 import android.view.WindowManager
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
-
-fun Activity.isScreenAutoBrightness(): Boolean {
-    return System.getInt(
-        contentResolver,
-        System.SCREEN_BRIGHTNESS_MODE
-    ) == System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
-}
-
-fun Activity.setScreenBrightness(bright: Int): Boolean {
-    if (isScreenAutoBrightness() || !System.canWrite(this)) return false
-    require(bright in 0..255)
-    System.putInt(contentResolver, System.SCREEN_BRIGHTNESS, bright)
-    return true
-}
 
 fun Activity.transStatusBar() {
     if (Build.VERSION.SDK_INT in 21..29) {

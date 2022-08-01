@@ -7,11 +7,7 @@ import com.github.hughnew.autolighter.ScreenReceiver
 
 val screenReceiver = ScreenReceiver()
 fun ContextWrapper.registerBroadcasts(){
-    val filter = IntentFilter().apply {
-        addAction(Intent.ACTION_SCREEN_ON)
-        addAction(Intent.ACTION_SCREEN_OFF)
-    }
-    registerReceiver(screenReceiver, filter)
+    registerReceiver(screenReceiver, IntentFilter(Intent.ACTION_SCREEN_ON))
 }
 
 fun ContextWrapper.unregisterBroadcasts(){

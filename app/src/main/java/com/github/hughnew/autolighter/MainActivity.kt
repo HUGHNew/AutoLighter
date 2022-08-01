@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     private val permissionLauncher =
         registerForActivityResult(WriteSettingContract()) {
             if (it) {
-                setScreenBrightness(HALF_BRIGHTNESS)
+                setScreenBrightness()
             }
         }
 

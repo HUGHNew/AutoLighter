@@ -1,20 +1,21 @@
 package com.github.hughnew.autolighter
 
-import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.github.hughnew.autolighter.helpers.getScreenBrightness
+import com.github.hughnew.autolighter.helpers.setScreenBrightness
 
 class ScreenReceiver:BroadcastReceiver() {
     companion object{
+        const val TAG = "AutoLighter.ScreenReceiver"
         const val SECOND = 1000L
-        var lastTime : Long = 0
+        var lastTime : Long = unixMillis()
         var status: Boolean = false
         fun unixMillis() : Long = System.currentTimeMillis()
     }
     override fun onReceive(context: Context, intent: Intent) {
-        Log.d(MainActivity.TAG,"Broadcast: ${intent.action}")
         when (intent.action) {
             Intent.ACTION_SCREEN_ON -> {
                 when (status) {
@@ -24,13 +25,15 @@ class ScreenReceiver:BroadcastReceiver() {
                     }
                     true -> {
                         if (unixMillis() - lastTime < SECOND) {
-                            (context as Activity).setScreenBrightness(MainActivity.HALF_BRIGHTNESS)
-                            status = false
+                            Log.w(TAG,"result:${context.setScreenBrightness()}")
                         }
+                        lastTime = unixMillis()
+                        status = false
                     }
                 }
+                Log.d(TAG,"lastTime:$lastTime, status:$status")
+                Log.w(TAG,"current brightness:${context.getScreenBrightness()}")
             }
-//            Intent.ACTION_SCREEN_OFF -> {}
         }
     }
 }
